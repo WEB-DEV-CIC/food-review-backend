@@ -8,7 +8,7 @@ const {
   updateReview,
   deleteReview
 } = require('../controllers/reviewController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 // Get all reviews
 router.get('/', getAllReviews);
@@ -20,12 +20,12 @@ router.get('/:id', getReview);
 router.get('/foods/:foodId/reviews', getFoodReviews);
 
 // Submit a review
-router.post('/foods/:foodId/reviews', auth, submitReview);
+router.post('/foods/:foodId/reviews', authenticateToken, submitReview);
 
 // Update a review
-router.put('/reviews/:id', auth, updateReview);
+router.put('/reviews/:id', authenticateToken, updateReview);
 
 // Delete a review
-router.delete('/reviews/:id', auth, deleteReview);
+router.delete('/reviews/:id', authenticateToken, deleteReview);
 
 module.exports = router; 

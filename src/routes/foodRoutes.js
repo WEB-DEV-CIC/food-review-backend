@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Food = require('../models/food');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
+const User = require('../models/user');
 
 // Get all foods with optional filters
 router.get('/', async (req, res) => {
@@ -85,7 +86,17 @@ router.get('/:id/reviews', async (req, res) => {
     if (!food) {
       return res.status(404).json({ message: 'Food not found' });
     }
-    res.json(food.reviews);
+    
+    // Populate user information for each review
+    const reviews = await Promise.all(food.reviews.map(async (review) => {
+      const user = await User.findById(review.userId).select('name');
+      return {
+        ...review.toObject(),
+        userName: user ? user.name : 'Anonymous'
+      };
+    }));
+    
+    res.json(reviews);
   } catch (error) {
     console.error('Error fetching reviews:', error);
     res.status(500).json({ message: 'Error fetching reviews' });
@@ -93,7 +104,7 @@ router.get('/:id/reviews', async (req, res) => {
 });
 
 // Submit a review for a food
-router.post('/:id/reviews', auth, async (req, res) => {
+router.post('/:id/reviews', authenticateToken, async (req, res) => {
   try {
     const food = await Food.findById(req.params.id);
     if (!food) {
@@ -105,17 +116,40 @@ router.post('/:id/reviews', auth, async (req, res) => {
       return res.status(400).json({ message: 'Rating and comment are required' });
     }
 
+    // Initialize reviews array if it doesn't exist
+    if (!food.reviews) {
+      food.reviews = [];
+    }
+
     const review = {
-      userId: req.user.id,
+      userId: req.user.userId,
       rating: Number(rating),
       comment: comment.trim(),
       createdAt: new Date(),
     };
 
     food.reviews.push(review);
+    
+    // Update average rating and review count
+    const totalRating = food.reviews.reduce((sum, review) => sum + review.rating, 0);
+    food.rating = totalRating / food.reviews.length;
+    food.reviewCount = food.reviews.length;
+    
     await food.save();
 
-    res.status(201).json(review);
+    // Get user information for the new review
+    const user = await User.findById(review.userId).select('name');
+    
+    // Return all reviews with user information
+    const reviews = await Promise.all(food.reviews.map(async (review) => {
+      const user = await User.findById(review.userId).select('name');
+      return {
+        ...review.toObject(),
+        userName: user ? user.name : 'Anonymous'
+      };
+    }));
+    
+    res.status(201).json(reviews);
   } catch (error) {
     console.error('Error submitting review:', error);
     res.status(500).json({ message: 'Error submitting review' });

@@ -1,21 +1,24 @@
-const auth = (req, res, next) => {
-  // This is a placeholder for actual authentication logic
-  // You would typically verify a JWT token here
-  
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Authentication required' });
-  }
+const jwt = require('jsonwebtoken');
 
-  try {
-    // const token = authHeader.split(' ')[1];
-    // Verify token logic would go here
-    // req.user = decoded user information
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Invalid authentication token' });
-  }
+const authenticateToken = (req, res, next) => {
+    try {
+        // Get token from cookie
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.status(401).json({ message: 'Authentication required' });
+        }
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        console.error('Authentication error:', error);
+        res.status(401).json({ message: 'Invalid token' });
+    }
 };
 
-module.exports = auth; 
+module.exports = {
+    authenticateToken
+}; 

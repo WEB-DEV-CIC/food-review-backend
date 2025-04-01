@@ -42,7 +42,7 @@ exports.submitReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
     const foodId = req.params.foodId;
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     // Check if food exists
     const food = await Food.findById(foodId);
@@ -85,7 +85,7 @@ exports.updateReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
     const reviewId = req.params.id;
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     const review = await Review.findOne({ _id: reviewId, userId });
     if (!review) {
@@ -113,7 +113,7 @@ exports.updateReview = async (req, res) => {
 exports.deleteReview = async (req, res) => {
   try {
     const reviewId = req.params.id;
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     const review = await Review.findOne({ _id: reviewId, userId });
     if (!review) {

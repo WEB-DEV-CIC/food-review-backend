@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const foodRoutes = require('./routes/foodRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -11,10 +13,15 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:8000', // Frontend URL
+    credentials: true // Allow credentials (cookies)
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/foods', foodRoutes);
 app.use('/api/v1', reviewRoutes);
 

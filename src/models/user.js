@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true
@@ -49,4 +53,5 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 // Add indexes for better query performance
 userSchema.index({ email: 1 });
 
-module.exports = mongoose.model('User', userSchema); 
+// Export the model only if it hasn't been defined yet
+module.exports = mongoose.models.User || mongoose.model('User', userSchema); 
