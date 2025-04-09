@@ -13,11 +13,17 @@
 ## Environment Setup
 Create a `.env` file in the project root with:
 ```
+PORT=3002
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=123
-DB_NAME=food_review_cql
 DB_PORT=5432
+
+# main database
+DB_NAME=food_review_cql
+
+# test database
+TEST_DB_NAME=food_review_test
 ```
 
 ## Sample Data Contents
@@ -56,9 +62,20 @@ Using pgAdmin4:
 2. Confirm tables are created
 3. Check database connection
 
+# creat main database
+createdb food_review_cql
+
+# create test database
+createdb food_review_test
+
+# initial database structure
+psql -d food_review_cql -f db.sql
+
 ### 3. Run Seed Script
 ```bash
-node seed.js
+npm run seed
+
+npm run seed-test
 ```
 
 ### 4. Verify Success
