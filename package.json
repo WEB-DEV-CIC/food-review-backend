@@ -9,7 +9,10 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "set NODE_ENV=test&& nodemon index.js",
+    "seed-test": "set NODE_ENV=test&& node seed.js",
+    "reset-test": "node setup-test-db.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

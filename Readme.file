@@ -1,0 +1,155 @@
+Food Review Backend
+📖 Project Overview
+Food Review Backend is a RESTful API service built with Node.js and Express that powers a food review platform. This system allows users to browse various foods, filter them by region, taste profiles, and ingredients, and leave reviews. Administrators can manage foods, users, and reviews through dedicated endpoints.
+
+✨ Features
+Authentication System: User registration, login, and role-based access control
+Food Management: CRUD operations for food items with region, ingredient, and taste profile associations
+Review System: Users can create, read, and delete reviews
+Advanced Filtering: Search foods by region, taste profiles, or ingredients
+Admin Dashboard: Admin-only endpoints for complete system management
+🛠️ Technology Stack
+Runtime Environment: Node.js
+Framework: Express.js
+Database: PostgreSQL
+Authentication: JWT (JSON Web Tokens)
+Development Tools: Nodemon for hot reloading
+📂 Project Structure
+food-review-backend/
+├── controllers/           # Request handlers for each route
+│   ├── adminController.js # Admin-specific operations
+│   ├── authController.js  # Authentication operations
+│   ├── foodController.js  # Food-related operations
+│   └── reviewController.js# Review-related operations
+├── routes/                # API route definitions
+│   ├── adminRoutes.js     # Admin routes
+│   ├── authRoutes.js      # Authentication routes
+│   ├── foodRoutes.js      # Food routes
+│   └── reviewRoutes.js    # Review routes
+├── middleware/            # Express middleware
+│   └── authMiddleware.js  # JWT authentication middleware
+├── db.js                  # Database connection and query methods
+├── seed.js                # Database seeding script
+├── setup-test-db.js       # Test database setup
+├── index.js               # Application entry point
+├── .env                   # Environment variables (not in repo)
+└── test/                  # Test files
+    └── api-tests.http     # HTTP request tests
+
+🚀 Setup & Installation
+Prerequisites
+Node.js (v14.0.0 or higher)
+PostgreSQL (v12.0 or higher)
+npm or yarn
+Installation Steps
+Clone the repository
+git clone https://github.com/yourusername/food-review-backend.git
+cd food-review-backend
+Install dependencies
+npm install
+Create environment file
+Create a .env file in the project root with the following variables:
+
+PORT=3002
+NODE_ENV=development
+
+# Database Configuration
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=food_review_cql
+DB_PORT=5432
+TEST_DB_NAME=food_review_test
+
+Setup the database
+
+Create two PostgreSQL databases: one for development and one for testing:
+createdb food_review_cql
+createdb food_review_test
+
+Run database setup scripts
+npm run reset-test  
+npm run seed-test 
+npm run test
+
+node setup-test-db.js
+node seed.js
+
+Start the server
+
+For development with hot reloading:
+npm run dev
+
+📊 Database Schema
+The system uses the following database tables:
+
+users: User accounts with authentication details
+foods: Food items with basic information
+regions: Geographical regions for foods
+ingredients: Food ingredients
+taste_profiles: Different taste categories
+reviews: User reviews for foods
+food_ingredients: Many-to-many relationship between foods and ingredients
+food_taste_profiles: Many-to-many relationship between foods and taste profiles
+🔌 API Endpoints
+Authentication
+POST /api/auth/register - Register a new user
+POST /api/auth/login - Login and receive JWT token
+Foods
+GET /api/foods - Get all foods (with optional filters)
+GET /api/foods/:id - Get food by ID
+GET /api/foods?region=:regionName - Filter foods by region
+GET /api/foods?taste=:tasteName - Filter foods by taste profile
+GET /api/foods?ingredient=:ingredientName - Filter foods by ingredient
+Reviews
+POST /api/reviews - Create a new review
+GET /api/reviews/food/:foodId - Get all reviews for a specific food
+Admin
+GET /api/admin/users - Get all users (admin only)
+POST /api/admin/users - Create a new user (admin only)
+POST /api/admin/foods - Add a new food (admin only)
+PUT /api/admin/foods/:id - Update a food (admin only)
+DELETE /api/admin/foods/:id - Delete a food (admin only)
+DELETE /api/admin/reviews/:id - Delete a review (admin only)
+🧪 Testing
+The project includes HTTP request tests in the api-tests.http file. You can run these tests using a REST client like VS Code's REST Client extension.
+
+To start the test server:
+
+npm run test
+
+🔐 Authentication Flow
+Registration: Users register with username, fullname, email, and password
+Login: Users login with username and password to receive a JWT token
+Authorization: Protected routes require a valid JWT token in the Authorization header
+Admin Access: Admin-only routes require the user to have an admin role
+🛑 Error Handling
+The API uses standard HTTP status codes:
+
+200 - Success
+201 - Created
+400 - Bad Request
+401 - Unauthorized
+403 - Forbidden
+404 - Not Found
+500 - Internal Server Error
+Each error response includes a JSON object with an error message.
+
+💡 Development Tips
+Database Transactions: Use transactions when making multiple related database operations to ensure data consistency.
+Input Validation: Always validate user input before processing it.
+Error Handling: Use try/catch blocks around database operations and provide meaningful error messages.
+Authentication: Protect sensitive routes with authentication middleware.
+Testing: Test your API endpoints regularly to ensure they work as expected.
+🔄 Common Troubleshooting
+Database Connection Issues: Check your PostgreSQL service is running and credential in .env are correct
+JWT Errors: Verify your JWT_SECRET is set and tokens are being properly generated
+404 Errors: Ensure route paths match exactly with what's in the router files
+500 Errors: Check server logs for detailed error messages
+📚 Further Resources
+Node.js Documentation
+Express.js Documentation
+PostgreSQL Documentation
+JWT Introduction
+📝 License
+This project is licensed under the MIT License.

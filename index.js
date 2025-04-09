@@ -1,7 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const db = require('./db');
 require('dotenv').config();
+
+const isTest = process.env.NODE_ENV === 'test';
+console.log(`Running in ${isTest ? 'test' : 'development'} mode`);
+
+db.connect(isTest)
+  .catch(err => {
+    console.error('Database connection failed:', err);
+    process.exit(1);
+  });
+
 
 if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD) {
   console.error('Missing required environment variables');

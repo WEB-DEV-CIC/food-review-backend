@@ -49,7 +49,31 @@ const getAllFoods = async (req, res) => {
 const getFoodById = async (req, res) => {
   const foodId = req.params.id;
   try {
-    const result = await db.query('SELECT * FROM foods WHERE id = $1', [foodId]);
+    const result = await db.query(`
+      SELECT f.*, r.name as region_name,
+        array_agg(DISTINCT tp.name) as taste_profiles,
+        array_agg(DISTINCT i.name) as ingredients,
+        (SELECT json_agg(json_build_object(
+          'id', rv.id,
+          'rating', rv.rating,
+          'comment', rv.comment,
+          'user', u.username,
+          'created_at', rv.created_at
+        ))
+        FROM reviews rv
+        JOIN users u ON rv.user_id = u.id
+        WHERE rv.food_id = f.id) as reviews
+      FROM foods f
+      LEFT JOIN regions r ON f.region_id = r.id
+      LEFT JOIN food_taste_profiles ftp ON f.id = ftp.food_id
+      LEFT JOIN taste_profiles tp ON ftp.taste_profile_id = tp.id
+      LEFT JOIN food_ingredients fi ON f.id = fi.food_id
+      LEFT JOIN ingredients i ON fi.ingredient_id = i.id
+      WHERE f.id = $1
+      GROUP BY f.id, r.name`,
+      [foodId]
+    );
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Food not found' });
     }

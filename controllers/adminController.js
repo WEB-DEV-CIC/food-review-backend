@@ -28,8 +28,9 @@ const addFood = async (req, res) => {
     
     res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to add food' });
-  }
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Failed to add food', details: err.message });
+}
 };
 
 const updateFood = async (req, res) => {

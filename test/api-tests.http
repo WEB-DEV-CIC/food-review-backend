@@ -1,0 +1,112 @@
+### environment variables
+@baseUrl = http://localhost:3002/api
+@contentType = application/json
+
+### Before testing - make sure you're running the test server (npm run test)
+
+
+### user register
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "testuser998",
+  "fullname": "Test User 998",
+  "email": "test998@example.com",
+  "password": "password998"
+}
+
+### user login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "testuser998",
+  "password": "password998"
+}
+
+### check food exists
+GET {{baseUrl}}/foods/1
+
+### get all foods
+GET {{baseUrl}}/foods
+
+### filter foods by region
+GET {{baseUrl}}/foods?region=Europe
+
+### filter foods by taste
+GET {{baseUrl}}/foods?taste=Spicy
+
+### filter foods by ingredient
+GET {{baseUrl}}/foods?ingredient=Meat
+
+### get food by id
+GET {{baseUrl}}/foods/3
+
+### add reviews
+POST {{baseUrl}}/reviews
+Content-Type: {{contentType}}
+
+{
+  "food_id": 1,
+  "user_id": 2,
+  "rating": 5,
+  "comment": "Absolutely delicious!"
+}
+
+### get reviews by food id
+GET {{baseUrl}}/reviews/food/1
+
+
+### === admin ===
+
+### adminlogin
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### get all foods
+GET {{baseUrl}}/admin/users
+
+### add new food
+POST {{baseUrl}}/admin/foods
+Content-Type: {{contentType}}
+
+{
+  "name": "Pad Thai",
+  "description": "Famous Thai stir-fried noodle dish",
+  "region_id": 1,
+  "image_url": "https://images.unsplash.com/photo-1559314809-0d155014e29e",
+  "ingredients": [4, 5, 7],
+  "taste_profiles": [1, 2]
+}
+
+### update food
+PUT {{baseUrl}}/admin/foods/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Margherita Pizza (Updated)",
+  "description": "Classic Italian pizza with fresh tomatoes, mozzarella, and basil",
+  "region_id": 2,
+  "image_url": "https://images.unsplash.com/photo-1604382355076-af4b0eb60143"
+}
+
+### delete food
+DELETE {{baseUrl}}/admin/foods/1
+
+### create new user/admin
+POST {{baseUrl}}/admin/users
+Content-Type: {{contentType}}
+
+{
+  "username": "newTestAdminCreatedByAdmin",
+  "fullname": "New Admin",
+  "email": "newTestAdmin@example.com",
+  "password": "admin123",
+  "role": "admin"
+}
