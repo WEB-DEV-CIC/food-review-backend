@@ -13,30 +13,35 @@ const pool = new Pool({
 const sampleUsers = [
   {
     username: 'admin',
+    fullname: 'Admin User',
     email: 'admin@example.com',
     password: 'admin123',
     role: 'admin'
   },
   {
     username: 'testuser1',
+    fullname: 'Test User 1',
     email: 'testuser1@example.com',
     password: 'user123',
     role: 'user'
   },
   {
     username: 'testuser2',
+    fullname: 'Test User 2',
     email: 'testuser2@example.com',
     password: 'user123',
     role: 'user'
   },
   {
     username: 'testuser3',
+    fullname: 'Test User 3',
     email: 'testuser3@example.com',
     password: 'user123',
     role: 'user'
   },
   {
     username: 'testuser4',
+    fullname: 'Test User 4',
     email: 'testuser4@example.com',
     password: 'user123',
     role: 'user'
@@ -276,10 +281,10 @@ const seedDatabase = async () => {
     // Seed users first
     for (const user of sampleUsers) {
       await pool.query(`
-        INSERT INTO users (username, email, password, role) 
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO users (username, fullname, email, password, role) 
+        VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (username) DO NOTHING
-      `, [user.username, user.email, user.password, user.role]);
+      `, [user.username,user.fullname, user.email, user.password, user.role]);
     }
 
     // Seed regions
