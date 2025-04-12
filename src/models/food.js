@@ -11,23 +11,19 @@ const foodSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
   cuisine: {
     type: String,
     required: true,
     trim: true
   },
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
   image: {
     type: String,
     required: true
-  },
-  isFeatured: {
-    type: Boolean,
-    default: false
   },
   rating: {
     type: Number,
@@ -60,10 +56,6 @@ const foodSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     }
-  }],
-  tags: [{
-    type: String,
-    trim: true
   }]
 }, {
   timestamps: true
@@ -72,6 +64,5 @@ const foodSchema = new mongoose.Schema({
 // Add indexes for better query performance
 foodSchema.index({ name: 1 });
 foodSchema.index({ cuisine: 1 });
-foodSchema.index({ isFeatured: 1 });
 
 module.exports = mongoose.model('Food', foodSchema); 

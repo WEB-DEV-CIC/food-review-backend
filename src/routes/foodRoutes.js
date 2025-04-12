@@ -41,6 +41,40 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Create new food (Admin only)
+router.post('/', authenticateToken, async (req, res) => {
+  try {
+    // Check if user is admin
+    const user = await User.findById(req.user.userId);
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ message: 'Admin access required' });
+    }
+
+    const { name, description, region, image } = req.body;
+
+    // Validate required fields
+    if (!name || !description || !region || !image) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    // Create new food
+    const food = new Food({
+      name,
+      description,
+      region,
+      image,
+      rating: 0,
+      reviewCount: 0
+    });
+
+    await food.save();
+    res.status(201).json(food);
+  } catch (error) {
+    console.error('Error creating food:', error);
+    res.status(500).json({ message: 'Error creating food' });
+  }
+});
+
 // Get featured foods
 router.get('/featured', async (req, res) => {
   try {

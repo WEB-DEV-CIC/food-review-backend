@@ -5,7 +5,7 @@ const User = require('../models/User');
 // Register a new user
 const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -17,7 +17,8 @@ const register = async (req, res) => {
         const user = new User({
             name,
             email,
-            password
+            password,
+            role: role || 'user' // Default to 'user' if role not provided
         });
 
         await user.save();
@@ -37,13 +38,15 @@ const register = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 // 24 hours
         });
 
-        // Return user data (excluding password)
+        // Return user data and token
         res.status(201).json({
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
-            }
+                email: user.email,
+                role: user.role
+            },
+            token
         });
     } catch (error) {
         console.error('Registration error:', error);
@@ -56,26 +59,31 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Validate input
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
+
         // Find user
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         // Check password using the model's method
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Generate JWT token
+        // Generate token
         const token = jwt.sign(
             { userId: user._id },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
-        // Set HTTP-only cookie
+        // Set token as HTTP-only cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -83,17 +91,19 @@ const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 // 24 hours
         });
 
-        // Return user data (excluding password)
+        // Return user data and token
         res.json({
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
-            }
+                email: user.email,
+                role: user.role
+            },
+            token: token
         });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: 'Error logging in' });
+        res.status(500).json({ error: 'Server error' });
     }
 };
 
