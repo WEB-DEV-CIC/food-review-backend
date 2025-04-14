@@ -39,7 +39,7 @@ Food Review Backend is a RESTful API service developed using Node.js and Express
 food-review-backend/
 ├── controllers/           # Route request handlers
 ├── routes/                # API endpoints
-├── middleware/            # JWT Authentication Middleware
+├── middleware/            # JWT Authentication Middleware(Next part)
 ├── db.js                  # Database connection methods
 ├── seed.js                # Sample data seeding
 ├── setup-test-db.js       # Setup test database
