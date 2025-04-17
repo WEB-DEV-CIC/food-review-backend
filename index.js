@@ -25,12 +25,21 @@ const adminRoutes = require('./routes/adminRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: [
+    'http://localhost:3000',   // React 
+    'http://localhost:5000',   // 
+    'http://localhost:5173',   // Vite 
+    'http://localhost:8000',   // 
+    'http://localhost:8080',   // Vue CLI 
+    'http://127.0.0.1:5500',   // VS Code Live Server
+  
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
+
 
 app.use('/api/foods', foodRoutes);
 app.use('/api/auth', authRoutes);

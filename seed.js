@@ -58,7 +58,7 @@ const sampleFoods = [
     name: 'Margherita Pizza',
     description: 'Classic Italian pizza with fresh tomatoes, mozzarella, and basil',
     region: 'Europe',
-    image_url: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143',
+    image_url: 'https://images.pexels.com/photos/31596394/pexels-photo-31596394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Dairy', 'Grain', 'Vegetable'],
     taste_profiles: ['Salty', 'Sweet'],
     reviews: [
@@ -80,10 +80,10 @@ const sampleFoods = [
     ]
   },
   {
-    name: 'Sushi Roll',
+    name: 'Sushi',
     description: 'Fresh salmon and avocado roll with premium sushi rice',
     region: 'Asia',
-    image_url: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c',
+    image_url: 'https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Seafood', 'Grain', 'Vegetable'],
     taste_profiles: ['Salty', 'Sour'],
     reviews: [
@@ -108,7 +108,7 @@ const sampleFoods = [
     name: 'Butter Chicken',
     description: 'Tender chicken in rich, creamy tomato sauce with Indian spices',
     region: 'Asia',
-    image_url: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398',
+    image_url: 'https://images.pexels.com/photos/9738981/pexels-photo-9738981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Meat', 'Dairy', 'Spice/Flavoring'],
     taste_profiles: ['Spicy', 'Sweet'],
     reviews: [
@@ -133,7 +133,7 @@ const sampleFoods = [
     name: 'Beef Tacos',
     description: 'Mexican street tacos with seasoned beef, onions, and cilantro',
     region: 'North America',
-    image_url: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47',
+    image_url: 'https://images.pexels.com/photos/7613555/pexels-photo-7613555.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Meat', 'Vegetable', 'Spice/Flavoring'],
     taste_profiles: ['Spicy', 'Salty'],
     reviews: [
@@ -158,7 +158,7 @@ const sampleFoods = [
     name: 'Greek Salad',
     description: 'Fresh Mediterranean salad with feta, olives, and olive oil',
     region: 'Europe',
-    image_url: 'https://images.unsplash.com/photo-1546793665-c74683f339c1',
+    image_url: 'https://images.pexels.com/photos/1213710/pexels-photo-1213710.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Vegetable', 'Dairy', 'Spice/Flavoring'],
     taste_profiles: ['Salty', 'Sour'],
     reviews: [
@@ -183,7 +183,7 @@ const sampleFoods = [
     name: 'Peking Duck',
     description: 'Crispy duck with thin pancakes, hoisin sauce, and scallions',
     region: 'Asia',
-    image_url: 'https://images.unsplash.com/photo-1525755662778-989d0524087e',
+    image_url: 'https://images.pexels.com/photos/5848595/pexels-photo-5848595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Meat', 'Grain', 'Spice/Flavoring'],
     taste_profiles: ['Sweet', 'Salty'],
     reviews: [
@@ -208,7 +208,7 @@ const sampleFoods = [
     name: 'Fish and Chips',
     description: 'Classic British battered fish with crispy chips',
     region: 'Europe',
-    image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947',
+    image_url: 'https://images.pexels.com/photos/1123250/pexels-photo-1123250.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Seafood', 'Grain', 'Vegetable'],
     taste_profiles: ['Salty'],
     reviews: [
@@ -233,7 +233,7 @@ const sampleFoods = [
     name: 'Pho',
     description: 'Vietnamese noodle soup with beef and fresh herbs',
     region: 'Asia',
-    image_url: 'https://images.unsplash.com/photo-1559314809-0d155014e29e',
+    image_url: 'https://images.pexels.com/photos/1265626/pexels-photo-1265626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Meat', 'Grain', 'Spice/Flavoring'],
     taste_profiles: ['Salty', 'Spicy'],
     reviews: [
@@ -255,17 +255,17 @@ const sampleFoods = [
     ]
   },
   {
-    name: 'Mango Sticky Rice',
-    description: 'Thai sweet dessert with fresh mango and coconut milk',
-    region: 'Asia',
-    image_url: 'https://images.unsplash.com/photo-1559314809-0d155014e29e',
+    name: 'Lamington',
+    description: 'TA classic Australian dessert consisting of sponge cake squares coated in a layer of chocolate sauce and rolled in desiccated coconut. Sometimes filled with cream or jam, lamingtons are a beloved treat at schools, fundraisers, and afternoon teas.',
+    region: 'Oceania',
+    image_url: 'https://images.pexels.com/photos/6441615/pexels-photo-6441615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     ingredients: ['Grain', 'Fruit', 'Dairy'],
     taste_profiles: ['Sweet'],
     reviews: [
       {
         username: 'testuser2',
         rating: 5,
-        comment: 'The mangoes are perfectly ripe and sweet!'
+        comment: 'Sweet! ^-^ !'
       },
       {
         username: 'testuser3',
@@ -275,7 +275,7 @@ const sampleFoods = [
       {
         username: 'testuser1',
         rating: 5,
-        comment: 'Best Thai dessert ever! So refreshing.'
+        comment: 'Best dessert ever! So refreshing.'
       }
     ]
   }
@@ -317,44 +317,61 @@ const seedDatabase = async () => {
 
     // Seed sample foods
     for (const food of sampleFoods) {
-      // Insert food
-      const { rows: [{ id: foodId }] } = await pool.query(
-        'INSERT INTO foods (name, description, region_id, image_url) VALUES ($1, $2, (SELECT id FROM regions WHERE name = $3), $4) RETURNING id',
-        [food.name, food.description, food.region, food.image_url]
-      );
-
-      // Add ingredients
-      for (const ingredient of food.ingredients) {
-        await pool.query(`
-          INSERT INTO food_ingredients (food_id, ingredient_id)
-          SELECT $1, id FROM ingredients WHERE name = $2`,
-          [foodId, ingredient]
+      try {
+        // 检查食物是否已存在
+        const { rows: existingFoods } = await pool.query(
+          'SELECT id FROM foods WHERE name = $1',
+          [food.name]
         );
-      }
-
-      // Add taste profiles
-      for (const taste of food.taste_profiles) {
-        await pool.query(`
-          INSERT INTO food_taste_profiles (food_id, taste_profile_id)
-          SELECT $1, id FROM taste_profiles WHERE name = $2`,
-          [foodId, taste]
-        );
-      }
-
-      // Add reviews if they exist
-      if (food.reviews) {
-        for (const review of food.reviews) {
-          const { rows: [user] } = await pool.query(
-            'SELECT id FROM users WHERE username = $1',
-            [review.username]
+        
+        let foodId;
+        
+        if (existingFoods.length === 0) {
+          // 插入新食物
+          const { rows: [{ id: newFoodId }] } = await pool.query(
+            'INSERT INTO foods (name, description, region_id, image_url) VALUES ($1, $2, (SELECT id FROM regions WHERE name = $3), $4) RETURNING id',
+            [food.name, food.description, food.region, food.image_url]
           );
-
-          await pool.query(`
-            INSERT INTO reviews (food_id, user_id, rating, comment)
-            VALUES ($1, $2, $3, $4)
-            ON CONFLICT DO NOTHING
-          `, [foodId, user.id, review.rating, review.comment]);
+          foodId = newFoodId;
+        } else {
+          foodId = existingFoods[0].id;
         }
+
+        // Add ingredients
+        for (const ingredient of food.ingredients) {
+          await pool.query(`
+            INSERT INTO food_ingredients (food_id, ingredient_id)
+            SELECT $1, id FROM ingredients WHERE name = $2`,
+            [foodId, ingredient]
+          );
+        }
+
+        // Add taste profiles
+        for (const taste of food.taste_profiles) {
+          await pool.query(`
+            INSERT INTO food_taste_profiles (food_id, taste_profile_id)
+            SELECT $1, id FROM taste_profiles WHERE name = $2`,
+            [foodId, taste]
+          );
+        }
+
+        // Add reviews if they exist
+        if (food.reviews) {
+          for (const review of food.reviews) {
+            const { rows: [user] } = await pool.query(
+              'SELECT id FROM users WHERE username = $1',
+              [review.username]
+            );
+
+            await pool.query(`
+              INSERT INTO reviews (food_id, user_id, rating, comment)
+              VALUES ($1, $2, $3, $4)
+              ON CONFLICT DO NOTHING
+            `, [foodId, user.id, review.rating, review.comment]);
+          }
+        }
+      } catch (error) {
+        console.error(`Error seeding food: ${food.name}`, error);
       }
     }
 

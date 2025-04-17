@@ -34,14 +34,14 @@ TEST_DB_NAME=food_review_test
 
 ### Foods (9 items)
 - Margherita Pizza
-- Sushi Roll
+- Sushi 
 - Butter Chicken
 - Beef Tacos
 - Greek Salad
 - Peking Duck
 - Fish and Chips
 - Pho
-- Mango Sticky Rice
+- 
 
 ### Supporting Data
 - 7 regions (Asia, Europe, etc.)

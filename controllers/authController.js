@@ -14,13 +14,13 @@ const register = async (req, res) => {
   }
 };
 
-// User/Admin Login
+// User/Admin Login 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
     const result = await db.query(
-      'SELECT id, username, role FROM users WHERE username = $1 AND password = $2',
-      [username, password]
+      'SELECT id, username, role FROM users WHERE email = $1 AND password = $2',
+      [email, password]
     );
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
