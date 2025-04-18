@@ -1,0 +1,11 @@
+POST http://localhost:5000/api/v1/admin
+Content-Type: application/json
+Authorization: Bearer <eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2ZhMDg3YmQ3MWNhYzgwYjNjNGVkMWQiLCJpYXQiOjE3NDQ5ODQ1MjAsImV4cCI6MTc0NTA3MDkyMH0.VTDcjprCGMSKiWOy1RKL0kk90h87VT3OrLnnzKdw-B0>
+
+{
+    "name": "Pizza Margherita",
+    "cuisine": "Italian",
+    "description": "Classic Italian pizza with fresh tomatoes, mozzarella, and basil.",
+    "price": 12.99,
+    "image": "https://example.com/images/pizza-margherita.jpg"
+}

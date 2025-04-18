@@ -1,0 +1,77 @@
+### Admin Login
+POST http://localhost:5000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin123"
+}
+
+###
+
+### Get all foods
+GET http://localhost:5000/api/v1/admin/foods
+Authorization: Bearer <eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2ZhMDg3YmQ3MWNhYzgwYjNjNGVkMWQiLCJpYXQiOjE3NDQ5ODQ1MjAsImV4cCI6MTc0NTA3MDkyMH0.VTDcjprCGMSKiWOy1RKL0kk90h87VT3OrLnnzKdw-B0>
+
+###
+
+### Add a new food
+POST http://localhost:5000/api/v1/admin/foods
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+    "name": "Pizza Margherita",
+    "cuisine": "Italian",
+    "description": "Classic pizza with tomato, mozzarella, and basil.",
+    "price": 12.99,
+    "image": "https://example.com/images/pizza.jpg"
+}
+
+###
+
+### Verify the added food
+GET http://localhost:5000/api/v1/admin/foods
+Authorization: Bearer {{TOKEN}}
+
+###
+
+### Update a food
+PUT http://localhost:5000/api/v1/admin/foods/{{FOOD_ID}}
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+    "name": "Updated Pizza Margherita",
+    "cuisine": "Italian",
+    "description": "Updated description for the pizza.",
+    "price": 14.99,
+    "image": "https://example.com/images/updated-pizza.jpg"
+}
+
+###
+
+### Delete a food
+DELETE http://localhost:5000/api/v1/admin/foods/{{FOOD_ID}}
+Authorization: Bearer {{TOKEN}}
+
+###
+
+### Get all reviews
+GET http://localhost:5000/api/v1/admin/reviews
+Authorization: Bearer {{TOKEN}}
+
+###
+
+### Delete a review
+DELETE http://localhost:5000/api/v1/admin/reviews/{{REVIEW_ID}}
+Authorization: Bearer {{TOKEN}}
+
+###
+
+### Get dashboard statistics
+GET http://localhost:5000/api/v1/admin/stats
+Authorization: Bearer {{TOKEN}}
+
+
+POST SH

@@ -16,6 +16,49 @@ router.get('/foods', protect, admin, async (req, res) => {
     }
 });
 
+// Add new food (admin only)
+router.post('/foods', protect, admin, async (req, res) => {
+    try {
+        const { name, cuisine, description, price, image } = req.body;
+        // Validate required fields
+        if (!name || !cuisine || !description || !price || !image) {
+            console.error('Validation Error: Missing required fields');
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        // Validate price
+        if (isNaN(price) || price <= 0) {
+            console.error('Validation Error: Invalid price');
+            return res.status(400).json({ error: 'Price must be a positive number' });
+        }
+
+        // Validate image URL
+        const urlRegex = /^(http|https):\/\/[^ "]+$/;
+        if (!urlRegex.test(image)) {
+            console.error('Validation Error: Invalid image URL');
+            return res.status(400).json({ error: 'Image must be a valid URL' });
+        }
+
+        // Create new food
+        const newFood = new Food({
+            name,
+            cuisine,
+            description,
+            price,
+            image
+        });
+
+        // Save food to database
+        const savedFood = await newFood.save();
+        console.log('New food added successfully:', savedFood);
+
+        res.status(201).json(savedFood);
+    } catch (error) {
+        console.error('Error adding new food:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // Update food (admin only)
 router.put('/foods/:id', protect, admin, async (req, res) => {
     try {
@@ -60,6 +103,7 @@ router.delete('/foods/:id', protect, admin, async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 
 // Get all reviews (admin only)
 router.get('/reviews', protect, admin, async (req, res) => {
@@ -129,4 +173,4 @@ router.get('/stats', protect, admin, async (req, res) => {
     }
 });
 
-module.exports = router; 
+module.exports = router;

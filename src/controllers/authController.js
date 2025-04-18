@@ -99,7 +99,7 @@ const login = async (req, res) => {
                 email: user.email,
                 role: user.role
             },
-            token: token
+            token: token // This is the token you can use in the REST client
         });
     } catch (error) {
         console.error('Login error:', error);
@@ -132,4 +132,4 @@ module.exports = {
     login,
     logout,
     checkAuth
-}; 
+};
