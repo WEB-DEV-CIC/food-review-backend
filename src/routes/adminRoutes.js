@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect, admin } = require('../middleware/authMiddleware');
 const Food = require('../models/food');
 const Review = require('../models/review');
-const User = require('../models/User');
+const User = require('../models/user');
 
 // Get all foods (admin only)
 router.get('/foods', protect, admin, async (req, res) => {
@@ -103,17 +103,34 @@ router.get('/stats', protect, admin, async (req, res) => {
         const [
             totalUsers,
             totalFoods,
-            totalReviews,
-            recentReviews
+            foods
         ] = await Promise.all([
             User.countDocuments(),
             Food.countDocuments(),
-            Review.countDocuments(),
-            Review.find()
-                .sort({ createdAt: -1 })
-                .limit(5)
-                .populate('user food')
+            Food.find()
         ]);
+
+        // Calculate total reviews by summing up reviewCount from all foods
+        const totalReviews = foods.reduce((sum, food) => sum + (food.reviewCount || 0), 0);
+
+        // Get recent reviews from foods
+        const allReviews = foods.reduce((reviews, food) => {
+            if (food.reviews) {
+                reviews.push(...food.reviews.map(review => ({
+                    ...review.toObject(),
+                    food: {
+                        _id: food._id,
+                        name: food.name
+                    }
+                })));
+            }
+            return reviews;
+        }, []);
+
+        // Sort reviews by createdAt and get the 5 most recent
+        const recentReviews = allReviews
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
 
         res.json({
             stats: {
@@ -125,6 +142,37 @@ router.get('/stats', protect, admin, async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching dashboard stats:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Create new food (admin only)
+router.post('/foods', protect, admin, async (req, res) => {
+    try {
+        const { name, cuisine, description, price, image } = req.body;
+
+        // Validate required fields
+        if (!name || !cuisine || !description || !price || !image) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        // Create new food
+        const food = new Food({
+            name,
+            cuisine,
+            description,
+            price,
+            image,
+            isFeatured: false, // Default to false
+            rating: 0,
+            reviewCount: 0,
+            reviews: []
+        });
+
+        await food.save();
+        res.status(201).json(food);
+    } catch (error) {
+        console.error('Error creating food:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });

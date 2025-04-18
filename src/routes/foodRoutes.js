@@ -7,7 +7,7 @@ const User = require('../models/user');
 // Get all foods with optional filters
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, cuisine } = req.query;
+    const { page = 1, limit = 10, search, cuisine, sort } = req.query;
     const query = {};
 
     // Add search filter if provided
@@ -23,15 +23,57 @@ router.get('/', async (req, res) => {
       query.cuisine = cuisine;
     }
 
+    // Sort options
+    let sortOption = {};
+    switch(sort) {
+      case 'rating':
+        sortOption = { rating: -1 };
+        break;
+      case 'price':
+        sortOption = { price: 1 }; // Sort by price ascending
+        break;
+      case 'alphabetic':
+        sortOption = { name: 1 };
+        break;
+      case 'latest':
+        sortOption = { createdAt: -1 };
+        break;
+      case 'reviews':
+        sortOption = { reviewCount: -1 };
+        break;
+      default:
+        sortOption = { createdAt: -1 }; // Default sort by latest
+    }
+
     const foods = await Food.find(query)
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .sort({ rating: -1 });
+      .sort(sortOption)
+      .populate('reviews')
+      .lean();
+
+    // Calculate average rating and review count for each food
+    const foodsWithStats = foods.map(food => {
+      const reviews = food.reviews || [];
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+      
+      return {
+        ...food,
+        rating: averageRating,
+        reviewCount: reviews.length,
+        reviews: undefined // Remove the reviews array from the response
+      };
+    });
+
+    // Sort by price if that's the selected option
+    if (sort === 'price') {
+      foodsWithStats.sort((a, b) => a.price - b.price);
+    }
 
     const total = await Food.countDocuments(query);
 
     res.json({
-      foods,
+      success: true,
+      foods: foodsWithStats,
       totalPages: Math.ceil(total / limit),
       currentPage: page
     });
