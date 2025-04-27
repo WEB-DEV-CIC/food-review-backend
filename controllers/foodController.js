@@ -50,7 +50,10 @@ const getFoodById = async (req, res) => {
   const foodId = req.params.id;
   try {
     const result = await db.query(`
-      SELECT f.*, r.name as region_name,
+      SELECT 
+        f.*,
+        r.name as region_name,
+        f.image_url as image,  
         array_agg(DISTINCT tp.name) as taste_profiles,
         array_agg(DISTINCT i.name) as ingredients,
         (SELECT json_agg(json_build_object(
@@ -77,7 +80,12 @@ const getFoodById = async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Food not found' });
     }
-    res.json(result.rows[0]);
+
+   
+    const food = result.rows[0];
+    food.image = food.image_url || food.image;  
+
+    res.json(food);
   } catch (err) {
     console.error('Database error:', err);
     res.status(500).json({ error: 'Database error', details: err.message });
