@@ -3,63 +3,67 @@ const db = require('../db');
 // === FOOD MANAGEMENT ===
 const addFood = async (req, res) => {
   const { name, description, region_id, image_url, ingredients, taste_profiles } = req.body;
+  
   try {
+    // 开始数据库事务
+    await db.query('BEGIN');
+
     // 1. 插入食物基本信息
-    const result = await db.query(
-      'INSERT INTO foods (name, description, region_id, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
+    const foodResult = await db.query(
+      'INSERT INTO foods (name, description, region_id, image_url) VALUES ($1, $2, $3, $4) RETURNING id',
       [name, description, region_id, image_url]
     );
-    const foodId = result.rows[0].id;
-    
-    // 2. 添加配料（如果有）
-    if (Array.isArray(ingredients)) {
-      for (let ingredient_id of ingredients) {
-        await db.query(
-          'INSERT INTO food_ingredients (food_id, ingredient_id) VALUES ($1, $2)',
-          [foodId, ingredient_id]
-        );
-      }
-    }
-    
-    // 3. 添加口味特征（如果有）
-    if (Array.isArray(taste_profiles)) {
-      for (let profile_id of taste_profiles) {
-        await db.query(
-          'INSERT INTO food_taste_profiles (food_id, taste_profile_id) VALUES ($1, $2)',
-          [foodId, profile_id]
-        );
-      }
-    }
-    
-    // 4. 获取完整的食物信息，包括区域名称
-    const completeFood = await db.query(`
-      SELECT 
-        f.*,
-        r.name as region_name
-      FROM foods f
-      LEFT JOIN regions r ON f.region_id = r.id
-      WHERE f.id = $1
-    `, [foodId]);
+    const foodId = foodResult.rows[0].id;
 
-    // 5. 获取配料和口味特征
-    const food = completeFood.rows[0];
-    res.json({
-      _id: food.id.toString(),
-      id: food.id,
-      name: food.name,
-      description: food.description,
-      region: food.region_name,
-      image: food.image_url, 
-      rating: '0.0',
-      reviewCount: 0,
-      ingredients: ingredients || [],
-      tasteProfile: taste_profiles || [],
-      cuisine: food.region_name
+    // 2. 处理原料
+    for (const ingredientName of ingredients) {
+      // 查找或创建原料
+      const ingredientResult = await db.query(
+        'INSERT INTO ingredients (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = $1 RETURNING id',
+        [ingredientName]
+      );
+      const ingredientId = ingredientResult.rows[0].id;
+      
+      // 关联食物和原料
+      await db.query(
+        'INSERT INTO food_ingredients (food_id, ingredient_id) VALUES ($1, $2)',
+        [foodId, ingredientId]
+      );
+    }
+
+    // 3. 处理口味特征
+    for (const profileName of taste_profiles) {
+      // 查找或创建口味特征
+      const profileResult = await db.query(
+        'INSERT INTO taste_profiles (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = $1 RETURNING id',
+        [profileName]
+      );
+      const profileId = profileResult.rows[0].id;
+      
+      // 关联食物和口味特征
+      await db.query(
+        'INSERT INTO food_taste_profiles (food_id, taste_profile_id) VALUES ($1, $2)',
+        [foodId, profileId]
+      );
+    }
+
+    // 提交事务
+    await db.query('COMMIT');
+
+    res.status(201).json({
+      success: true,
+      message: 'Food added successfully',
+      food_id: foodId
     });
-    
-  } catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ error: 'Failed to add food', details: err.message });
+
+  } catch (error) {
+    // 回滚事务
+    await db.query('ROLLBACK');
+    console.error('Error adding food:', error);
+    res.status(500).json({ 
+      error: 'Failed to add food', 
+      details: error.message 
+    });
   }
 };
 
